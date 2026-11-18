@@ -1,0 +1,1 @@
+module.exports=(req,res)=>{if(req.method!=="POST"){res.setHeader("Allow","POST");return res.status(405).json({ok:false})}res.setHeader("Set-Cookie","rh_admin_session=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0");return res.status(200).json({ok:true})};
