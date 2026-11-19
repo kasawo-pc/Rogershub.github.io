@@ -1,4 +1,4 @@
-const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || "https://rogershub-2026.vercel.app";
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "https://rogershub-2026.vercel.app,https://rogershub.github.io,https://kasawo-pc.github.io").split(",").map(s => s.trim()).filter(Boolean);
 
 function send(res, status, data) {
   res.statusCode = status;
@@ -10,12 +10,12 @@ function send(res, status, data) {
 export default async function handler(req, res) {
   const origin = req.headers.origin;
 
-  if (origin && origin !== ALLOWED_ORIGIN) {
+  if (origin && !ALLOWED_ORIGINS.includes(origin)) {
     return send(res, 403, { error: "This website is not allowed to use the assistant." });
   }
 
   if (origin) {
-    res.setHeader("Access-Control-Allow-Origin", ALLOWED_ORIGIN);
+    res.setHeader("Access-Control-Allow-Origin", origin);
     res.setHeader("Vary", "Origin");
   }
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
