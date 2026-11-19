@@ -181,7 +181,7 @@
   const currency=document.getElementById('currency');
   const formatUGX=n=>'UGX '+Math.round(n).toLocaleString('en-US');
   const formatUSD=n=>'$'+(n/3700).toLocaleString('en-US',{maximumFractionDigits:0});
-  function updatePrices(){document.querySelectorAll('.price[data-low]').forEach(el=>{const low=Number(el.dataset.low),high=Number(el.dataset.high);el.textContent=currency.value==='USD'?formatUSD(low)+' – '+formatUSD(high):formatUGX(low)+' – '+formatUGX(high);});document.getElementById('rateNote').textContent=currency.value==='USD'?'Indicative conversion: UGX 3,700 per $1 (confirm the current rate before payment).':'USD conversion uses an indicative UGX 3,700 per $1 reference.';}
+  function updatePrices(){document.querySelectorAll('.price[data-low]').forEach(el=>{const low=Number(el.dataset.low),high=Number(el.dataset.high);el.textContent=currency.value==='USD'?formatUSD(low)+' – '+formatUSD(high):formatUGX(low)+' – '+formatUGX(high);});document.getElementById('rateNote').textContent=currency.value==='USD'?'Rough display estimate only; this is not a live exchange rate. Confirm the current rate before payment.':'USD display is a rough estimate, not a live exchange rate.';}
   currency.addEventListener('change',updatePrices);
   const ratingButtons=[...document.querySelectorAll('[data-rating]')];
   let selectedRating=0;
