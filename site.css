@@ -26,3 +26,9 @@ footer{border-top:1px solid var(--line);padding:38px 0 20px;background:#070c15}.
 @media(max-width:520px){.rh-assistant{right:12px;bottom:12px}.rh-launcher{padding:12px 15px}.rh-panel{right:-2px;bottom:61px;width:calc(100vw - 24px);height:min(560px,calc(100dvh - 95px))}}
 
 /* Rogers Hub refreshed logo */ .rh-logo{display:block;width:180px;height:auto;max-width:48vw;object-fit:contain} .footer-brand .rh-logo{width:220px;max-width:100%}
+
+/* Daily enhancement: consistent full-logo branding on every shared-layout page */
+.nav .brand{font-size:0;gap:0;flex-shrink:0}
+.nav .brand-mark{display:block;width:190px;height:48px;flex:none;border-radius:0;background-color:transparent;background-image:url('assets/rogershub-logo.svg');background-position:center;background-repeat:no-repeat;background-size:contain;box-shadow:none;font-size:0;color:transparent}
+.footer-brand .brand-mark{width:220px;height:55px}
+@media(max-width:600px){.nav .brand-mark{width:154px;height:40px}.footer-brand .brand-mark{width:190px;height:48px}}
