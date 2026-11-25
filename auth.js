@@ -1,6 +1,6 @@
 // Rogers Hub member authentication. Set the Supabase URL and publishable key below.
-const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_PUBLISHABLE_KEY";
+const SUPABASE_URL = "https://kmdshraspqvmuqgmzigw.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_gtYteZIQR0X3_ttYZZ0ZCw_F-TC2Qxd";
 const configured = SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("YOUR_") && !SUPABASE_ANON_KEY.includes("YOUR_");
 const statusEl = document.getElementById("status");
 const showStatus = (message, isError=false) => { if(statusEl){statusEl.textContent=message;statusEl.style.color=isError?"#ff9b9b":"#65e0d2";} };
