@@ -7,7 +7,6 @@
   <meta name="theme-color" content="#080d18">
   <meta name="description" content="Rogers Hub — web design, development, e-commerce and digital solutions by Rogers in Uganda. Explore projects, services, pricing and get in touch.">
   <meta name="keywords" content="Rogers Hub, web design Uganda, web development, e-commerce websites, Kasawo Programmers Club, portfolio websites">
-<meta name="google-site-verification" content="k2XMbcHWsg5ODcemL6SwC1YiZlKp426MFMND_9nTjYQ" />
   <meta property="og:title" content="Rogers Hub — Digital ideas, built with purpose">
   <meta property="og:description" content="Web design, development and digital solutions by Rogers in Uganda.">
   <meta property="og:type" content="website">
@@ -65,7 +64,7 @@
       {
         "@type": "WebSite",
         "name": "Rogers Hub",
-        "url": "https://rogershub-2026.vercel.app/",
+        "url": "https://rogerstechhub.vercel.app/",
         "description": "Web design, development, e-commerce and digital solutions by Rogers in Uganda."
       },
       {
@@ -216,16 +215,11 @@
 <button class="pwa-install" id="pwaInstall" type="button" aria-label="Install Rogers Tech Hub"><i class="fa-solid fa-download"></i> Install app</button>
 <button class="back-top" id="backTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
 <script>
-  const menuBtn=document.getElementById('menuBtn');
-  const navLinks=document.getElementById('navLinks');
-  menuBtn.addEventListener('click',()=>{const open=navLinks.classList.toggle('open');menuBtn.setAttribute('aria-expanded',String(open));menuBtn.innerHTML=open?'<i class="fa-solid fa-xmark"></i><span>Close</span>':'<i class="fa-solid fa-bars"></i><span>Menu</span>';});
-  navLinks.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{navLinks.classList.remove('open');menuBtn.setAttribute('aria-expanded','false');menuBtn.innerHTML='<i class="fa-solid fa-bars"></i><span>Menu</span>';}));
-  document.getElementById('year').textContent=new Date().getFullYear();
   const currency=document.getElementById('currency');
   const formatUGX=n=>'UGX '+Math.round(n).toLocaleString('en-US');
   const formatUSD=n=>'$'+(n/3700).toLocaleString('en-US',{maximumFractionDigits:0});
   function updatePrices(){document.querySelectorAll('.price[data-low]').forEach(el=>{const low=Number(el.dataset.low),high=Number(el.dataset.high);el.textContent=currency.value==='USD'?formatUSD(low)+' – '+formatUSD(high):formatUGX(low)+' – '+formatUGX(high);});document.getElementById('rateNote').textContent=currency.value==='USD'?'Rough display estimate only; this is not a live exchange rate. Confirm the current rate before payment.':'USD display is a rough estimate, not a live exchange rate.';}
-  currency.addEventListener('change',updatePrices);
+  currency.addEventListener('change',updatePrices);updatePrices();
   const ratingButtons=[...document.querySelectorAll('[data-rating]')];
   let selectedRating=0;
   function chooseRating(value){selectedRating=value;ratingButtons.forEach(star=>{const n=Number(star.dataset.rating);star.classList.toggle('selected',n<=selectedRating);star.setAttribute('aria-checked',String(n===selectedRating));star.tabIndex=n===selectedRating?0:-1;});document.getElementById('ratingHint').textContent=selectedRating+' out of 5 stars selected. Thank you!';document.getElementById('ratingSubmit').disabled=false;}
@@ -246,7 +240,7 @@
     faqSearch.addEventListener('input',filterFAQs);filterFAQs();
   }
   const projectPlanner=document.getElementById('rhProjectPlanner');
-  projectPlanner.addEventListener('submit',event=>{event.preventDefault();const type=document.getElementById('rhProjectType').value;const budget=document.getElementById('rhProjectBudget').value;const timeline=document.getElementById('rhProjectTimeline').value;const details=document.getElementById('rhProjectDetails').value.trim();const brief='Hello Rogers! I would like to discuss a project.\n\nProject: '+type+'\\nBudget: '+budget+'\\nTimeline: '+timeline+'\\nDetails: '+details;const url='https://wa.me/256741798579?text='+encodeURIComponent(brief);window.open(url,'_blank','noopener');});
+  if(projectPlanner)projectPlanner.addEventListener('submit',event=>{event.preventDefault();const type=document.getElementById('rhProjectType').value;const budget=document.getElementById('rhProjectBudget').value;const timeline=document.getElementById('rhProjectTimeline').value;const details=document.getElementById('rhProjectDetails').value.trim();const brief='Hello Rogers! I would like to discuss a project.\n\nProject: '+type+'\\nBudget: '+budget+'\\nTimeline: '+timeline+'\\nDetails: '+details;const url='https://wa.me/256741798579?text='+encodeURIComponent(brief);window.open(url,'_blank','noopener');});
 </script>
 <script>
 (()=>{let deferredPrompt=null;const button=document.getElementById('pwaInstall');if(!button)return;
