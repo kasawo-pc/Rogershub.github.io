@@ -1,4 +1,4 @@
-const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "https://rogershub-2026.vercel.app,https://rogershub.github.io,https://kasawo-pc.github.io").split(",").map(s => s.trim()).filter(Boolean);
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || "https://rogerstechhub.vercel.app,https://rogershub-2026.vercel.app,https://rogershub.github.io,https://kasawo-pc.github.io").split(",").map(s => s.trim()).filter(Boolean);
 
 function send(res, status, data) {
   res.statusCode = status;
