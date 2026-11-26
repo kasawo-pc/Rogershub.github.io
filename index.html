@@ -44,6 +44,9 @@
     .planner-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.planner-field{display:flex;flex-direction:column;gap:7px}.planner-field label{font-weight:700;font-size:.88rem}.planner-field select,.planner-field textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#08111f;color:var(--text)}.planner-field textarea{min-height:130px;resize:vertical}.planner-field select:focus,.planner-field textarea:focus{outline:2px solid #718bff;outline-offset:2px}.planner-field.full{grid-column:1/-1}.planner-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}.planner-note{font-size:.78rem;color:var(--muted);margin-top:12px}@media(max-width:560px){.planner-grid{grid-template-columns:1fr}.planner-field.full{grid-column:auto}}
 
     .faq-search{margin:0 0 18px;max-width:650px}.faq-search label{display:block;font-weight:700;margin-bottom:7px}.faq-search input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#08111f;color:var(--text)}.faq-search input:focus{outline:2px solid var(--blue);outline-offset:2px}.faq-search-status{color:var(--muted);font-size:.84rem;margin:8px 0 0}.faq-empty{padding:18px;border:1px dashed var(--line);border-radius:14px;color:var(--muted)}
+
+    .pwa-install{position:fixed;left:18px;bottom:20px;z-index:9998;display:none;align-items:center;gap:9px;padding:13px 18px;border:0;border-radius:999px;background:linear-gradient(120deg,#168c58,#21b77a);color:#fff;font-weight:700;box-shadow:0 12px 36px #0008;cursor:pointer}
+    .pwa-install.show{display:flex}
 </style>
   <style id="rogers-hub-assistant-styles">
 .rh-assistant{position:fixed;right:22px;bottom:22px;z-index:9999;font-family:"DM Sans",sans-serif;color:#f4f7ff}
@@ -80,6 +83,10 @@
   }
   </script>
 <style>.rh-logo{display:block;width:210px;height:auto;max-width:48vw;object-fit:contain}.footer-brand .rh-logo{width:240px;max-width:100%}</style>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="apple-touch-icon" href="/assets/rogershub-app-icon.svg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Rogers Tech Hub">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -206,6 +213,7 @@
     <div class="copyright"><span>© <span id="year"></span> Rogers Hub. All rights reserved.</span><span>Designed and developed by Rogers · Uganda</span></div>
   </div>
 </footer>
+<button class="pwa-install" id="pwaInstall" type="button" aria-label="Install Rogers Tech Hub"><i class="fa-solid fa-download"></i> Install app</button>
 <button class="back-top" id="backTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
 <script>
   const menuBtn=document.getElementById('menuBtn');
@@ -239,6 +247,14 @@
   }
   const projectPlanner=document.getElementById('rhProjectPlanner');
   projectPlanner.addEventListener('submit',event=>{event.preventDefault();const type=document.getElementById('rhProjectType').value;const budget=document.getElementById('rhProjectBudget').value;const timeline=document.getElementById('rhProjectTimeline').value;const details=document.getElementById('rhProjectDetails').value.trim();const brief='Hello Rogers! I would like to discuss a project.\n\nProject: '+type+'\\nBudget: '+budget+'\\nTimeline: '+timeline+'\\nDetails: '+details;const url='https://wa.me/256741798579?text='+encodeURIComponent(brief);window.open(url,'_blank','noopener');});
+</script>
+<script>
+(()=>{let deferredPrompt=null;const button=document.getElementById('pwaInstall');if(!button)return;
+window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredPrompt=event;button.classList.add('show');});
+button.addEventListener('click',async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;button.classList.remove('show');}else{alert('To install Rogers Tech Hub: open your browser menu (⋮), then choose “Install app” or “Add to Home screen”.');}});
+window.addEventListener('appinstalled',()=>button.classList.remove('show'));
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));
+})();
 </script>
 <script src="site.js?v=20261114-ai" defer></script></body>
 </html>
