@@ -33,5 +33,7 @@ else {
    try{const {data,error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;if(data.session)location.href="member-dashboard.html";else showStatus("Signed in, but no session was returned.",true);}
    catch(err){showStatus(friendly(err),true);button.disabled=false;}
  });
+ const forgot=document.getElementById("forgotPassword");
+ if(forgot)forgot.addEventListener("click",async()=>{const email=document.getElementById("email").value.trim();if(!email){showStatus("Enter your email address first, then tap Forgot password.",true);return;}forgot.disabled=true;showStatus("Sending password reset email…");try{const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+"/login.html"});if(error)throw error;showStatus("Password reset email sent. Check your inbox and spam folder.");}catch(err){showStatus(friendly(err),true);}finally{forgot.disabled=false;}});
  if(welcome){sb.auth.getSession().then(({data,error})=>{if(error||!data.session){location.replace("login.html");return;}welcome.textContent="Welcome, "+(data.session.user.user_metadata?.full_name||data.session.user.email)+"!";}).catch(()=>location.replace("login.html"));const logout=document.getElementById("logoutBtn");if(logout)logout.addEventListener("click",async()=>{showStatus("Signing out…");const {error}=await sb.auth.signOut();if(error)showStatus(friendly(error),true);else location.replace("login.html");});}
 }
