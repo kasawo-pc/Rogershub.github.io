@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Switch icon between bars and close (X)
             const icon = mobileMenuBtn.querySelector("i");
             if (icon) {
-                if (navActions.classList.contains("active")) {
+                if (navActions && navActions.classList.contains("active")) {
                     icon.classList.remove("fa-bars");
                     icon.classList.add("fa-xmark");
                 } else {
