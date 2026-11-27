@@ -21,7 +21,18 @@
   });
  }
  if(login){
-  login.addEventListener("submit",async e=>{e.preventDefault();const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value,btn=login.querySelector("button");btn.disabled=true;msg("Signing in…");try{const {data,error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;if(data.session)goDash();else msg("Sign-in did not return a session.",true);}catch(err){msg(nice(err),true);btn.disabled=false;}});
+  login.addEventListener("submit",async e=>{
+   e.preventDefault();const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value,btn=login.querySelector("button");btn.disabled=true;msg("Checking password…");
+   try{
+    const {data,error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;if(!data.session)throw new Error("Sign-in failed.");
+    await sb.auth.signOut();msg("Password correct. Sending login verification code…");
+    const {error:otpError}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false}});if(otpError)throw otpError;
+    login.innerHTML='<p>A verification code was sent to <strong></strong>.</p><label for="loginOtp">Email verification code</label><input id="loginOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="10" required><button id="loginVerify" type="submit">Verify and log in</button><button id="loginResend" type="button">Resend code</button>';
+    login.querySelector("strong").textContent=email;msg("Code sent. Check your inbox and spam folder.");
+    login.addEventListener("submit",async ev=>{ev.preventDefault();const v=document.getElementById("loginVerify"),token=document.getElementById("loginOtp").value.trim();if(!token)return;v.disabled=true;msg("Verifying code…");try{const {data,error}=await sb.auth.verifyOtp({email,token,type:"email"});if(error)throw error;if(data.session)goDash();else msg("Verification did not create a session.",true);}catch(err){msg(nice(err),true);v.disabled=false;}},{once:true});
+    document.getElementById("loginResend").addEventListener("click",async ev=>{const b=ev.currentTarget;b.disabled=true;msg("Resending code…");try{const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false}});if(error)throw error;msg("Code resent. Check your inbox.");}catch(err){msg(nice(err),true);}finally{b.disabled=false;}});
+   }catch(err){msg(nice(err),true);btn.disabled=false;}
+  });
   const forgot=document.getElementById("forgotPassword");if(forgot)forgot.addEventListener("click",async()=>{const email=document.getElementById("email").value.trim();if(!email){msg("Enter your email address first.",true);return;}forgot.disabled=true;msg("Sending password reset email…");try{const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+"/login.html"});if(error)throw error;msg("Password reset email sent. Check your inbox and spam folder.");}catch(err){msg(nice(err),true);}finally{forgot.disabled=false;}});
  }
  if(welcome){sb.auth.getSession().then(({data,error})=>{if(error||!data.session){location.replace("login.html");return;}welcome.textContent="Welcome, "+(data.session.user.user_metadata?.full_name||data.session.user.email)+"!";}).catch(()=>location.replace("login.html"));const logout=document.getElementById("logoutBtn");if(logout)logout.addEventListener("click",async()=>{msg("Signing out…");const {error}=await sb.auth.signOut();if(error)msg(nice(error),true);else location.replace("login.html");});}
