@@ -11,10 +11,11 @@
  const goDash=()=>location.assign("member-dashboard.html");
  if(signup){
   signup.addEventListener("submit",async e=>{
+   if(signup.dataset.stage==="verify")return;
    e.preventDefault();const name=document.getElementById("name")?.value.trim()||"",email=document.getElementById("email")?.value.trim(),password=document.getElementById("password")?.value;const btn=signup.querySelector('button[type="submit"],button:not([type])');if(!email||!password)return;if(password.length<8){msg("Password must be at least 8 characters.",true);return;}if(btn)btn.disabled=true;msg("Creating account…");
    try{const {data,error}=await sb.auth.signUp({email,password,options:{data:{full_name:name}}});if(error)throw error;if(data.session){goDash();return;}
-    signup.innerHTML='<p>Enter the verification code sent to <strong></strong>.</p><label for="otp">Email verification code</label><input id="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="10" required><button id="verifyBtn" type="submit">Verify email</button><button id="resendCode" type="button">Resend code</button>';signup.querySelector("strong").textContent=email;
-    signup.addEventListener("submit",async ev=>{ev.preventDefault();const verify=document.getElementById("verifyBtn"),token=document.getElementById("otp")?.value.trim();if(!token)return;verify.disabled=true;msg("Verifying email…");try{const {data,error}=await sb.auth.verifyOtp({email,token,type:"signup"});if(error)throw error;if(data.session)goDash();else msg("Email verified. You can now log in.");}catch(err){msg(nice(err),true);verify.disabled=false;}},{once:true});
+    signup.dataset.stage="verify";signup.innerHTML='<p>Enter the verification code sent to <strong></strong>.</p><label for="otp">Email verification code</label><input id="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="10" required><button id="verifyBtn" type="submit">Verify email</button><button id="resendCode" type="button">Resend code</button>';signup.querySelector("strong").textContent=email;
+    signup.addEventListener("submit",async ev=>{ev.preventDefault();const verify=document.getElementById("verifyBtn"),token=document.getElementById("otp")?.value.trim();if(!token)return;verify.disabled=true;msg("Verifying email…");try{const {data,error}=await sb.auth.verifyOtp({email,token,type:"signup"});if(error)throw error;if(data.session)goDash();else msg("Email verified. You can now log in.");}catch(err){msg(nice(err),true);verify.disabled=false;}});
     document.getElementById("resendCode").addEventListener("click",async ev=>{const b=ev.currentTarget;b.disabled=true;msg("Resending verification code…");try{const {error}=await sb.auth.resend({type:"signup",email});if(error)throw error;msg("Code resent. Check your inbox and spam folder.");}catch(err){msg(nice(err),true);}finally{b.disabled=false;}});
     msg("Verification code sent. Check your inbox and spam folder.");
    }catch(err){msg(nice(err),true);if(btn)btn.disabled=false;}
@@ -22,12 +23,13 @@
  }
  if(login){
   login.addEventListener("submit",async e=>{
+   if(login.dataset.stage==="verify")return;
    e.preventDefault();const email=document.getElementById("email").value.trim(),password=document.getElementById("password").value,btn=login.querySelector("button");btn.disabled=true;msg("Checking password…");
    try{
     const {data,error}=await sb.auth.signInWithPassword({email,password});if(error)throw error;if(!data.session)throw new Error("Sign-in failed.");
     await sb.auth.signOut();msg("Password correct. Sending login verification code…");
     const {error:otpError}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false}});if(otpError)throw otpError;
-    login.innerHTML='<p>A verification code was sent to <strong></strong>.</p><label for="loginOtp">Email verification code</label><input id="loginOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="10" required><button id="loginVerify" type="submit">Verify and log in</button><button id="loginResend" type="button">Resend code</button>';
+    login.dataset.stage="verify";login.innerHTML='<p>A verification code was sent to <strong></strong>.</p><label for="loginOtp">Email verification code</label><input id="loginOtp" inputmode="numeric" autocomplete="one-time-code" maxlength="10" required><button id="loginVerify" type="submit">Verify and log in</button><button id="loginResend" type="button">Resend code</button>';
     login.querySelector("strong").textContent=email;msg("Code sent. Check your inbox and spam folder.");
     login.addEventListener("submit",async ev=>{ev.preventDefault();const v=document.getElementById("loginVerify"),token=document.getElementById("loginOtp").value.trim();if(!token)return;v.disabled=true;msg("Verifying code…");try{const {data,error}=await sb.auth.verifyOtp({email,token,type:"email"});if(error)throw error;if(data.session)goDash();else msg("Verification did not create a session.",true);}catch(err){msg(nice(err),true);v.disabled=false;}},{once:true});
     document.getElementById("loginResend").addEventListener("click",async ev=>{const b=ev.currentTarget;b.disabled=true;msg("Resending code…");try{const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false}});if(error)throw error;msg("Code resent. Check your inbox.");}catch(err){msg(nice(err),true);}finally{b.disabled=false;}});
