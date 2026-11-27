@@ -10,7 +10,7 @@ export default async function handler(req,res){
  const question=typeof body?.question==="string"?body.question.trim():"";if(!question||question.length>500)return send(res,400,{error:"Your question must be between 1 and 500 characters."});
  const key=process.env.GEMINI_API_KEY;if(!key||!key.trim())return send(res,200,{answer:quickAnswer(question)});
  try{
-  const upstream=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key.trim()},body:JSON.stringify({systemInstruction:{parts:[{text:BUSINESS_CONTEXT}]},contents:[{role:"user",parts:[{text:question}]}],generationConfig:{maxOutputTokens:350}})});
+  const upstream=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent",{method:"POST",headers:{"Content-Type":"application/json","x-goog-api-key":key.trim()},body:JSON.stringify({systemInstruction:{parts:[{text:BUSINESS_CONTEXT}]},contents:[{role:"user",parts:[{text:question}]}],generationConfig:{maxOutputTokens:350}})});
   const data=await upstream.json().catch(()=>({}));
   if(!upstream.ok){const apiMessage=String(data?.error?.message||"Unknown API error").slice(0,220);console.error("Gemini API error:",upstream.status,apiMessage);return send(res,200,{answer:quickAnswer(question)});}
   const answer=(data.candidates?.[0]?.content?.parts||[]).map(p=>p.text||"").join("\n").trim();
