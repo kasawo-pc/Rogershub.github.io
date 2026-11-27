@@ -8,7 +8,7 @@
  if(!window.supabase){msg("Authentication library failed to load. Refresh and retry.",true);return;}
  const sb=window.supabase.createClient(URL,KEY);
  const signup=document.getElementById("signupForm"),login=document.getElementById("loginForm"),welcome=document.getElementById("welcome");
- const goDash=()=>location.assign("member-dashboard.html");
+ const goDash=()=>location.replace("member-dashboard.html");
  if(signup){
   signup.addEventListener("submit",async e=>{
    if(signup.dataset.stage==="verify")return;
