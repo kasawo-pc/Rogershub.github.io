@@ -32,3 +32,16 @@ footer{border-top:1px solid var(--line);padding:38px 0 20px;background:#070c15}.
 .nav .brand-mark{display:block;width:190px;height:48px;flex:none;border-radius:0;background-color:transparent;background-image:url('assets/rogershub-logo.svg');background-position:center;background-repeat:no-repeat;background-size:contain;box-shadow:none;font-size:0;color:transparent}
 .footer-brand .brand-mark{width:220px;height:55px}
 @media(max-width:600px){.nav .brand-mark{width:154px;height:40px}.footer-brand .brand-mark{width:190px;height:48px}}
+
+/* World-class polish: consistent micro-interactions, focus states and safe entrance motion */
+:where(a,button,input,select,textarea,[role="button"]){-webkit-tap-highlight-color:transparent}
+:where(a,button,input,select,textarea):focus-visible{outline:2px solid #8ea4ff;outline-offset:3px}
+:where(.btn,.card,.panel,.form,.filter-btn,.md-links a,.socials a,.rh-launcher,.rh-prompts button){transition:transform .22s ease,border-color .22s ease,background-color .22s ease,box-shadow .22s ease,opacity .22s ease}
+.btn:active,button:active{transform:translateY(1px) scale(.985)}
+.card:hover,.panel:hover{box-shadow:0 16px 36px rgba(0,0,0,.18)}
+body{animation:rh-page-in .35s ease both}
+@keyframes rh-page-in{from{opacity:.75}to{opacity:1}}
+::selection{background:#718bff;color:#fff}
+img{max-width:100%;height:auto}
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){body{animation:none!important} :where(a,button,.card,.panel,.form){transition:none!important}}
