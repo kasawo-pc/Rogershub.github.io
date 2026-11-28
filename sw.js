@@ -1,7 +1,7 @@
-const CACHE_NAME='rogershub-pwa-v2-public-only';
+const CACHE_NAME='rogershub-pwa-v3-search-refresh';
 const PUBLIC_PAGES=new Set(['/','/index.html','/about.html','/package.html','/pricing.html','/gallery.html','/blog.html','/news.html','/testimonials.html','/join.html','/contact.html','/privacy.html','/terms.html','/community.html','/faq.html','/portfolio.html','/reviews.html','/support.html','/careers.html','/404.html']);
 const STATIC_FILES=new Set(['/manifest.webmanifest','/site.css','/site.js','/index.css','/index.js','/contact.css','/contact.js','/gallery.css','/gallery.js','/join.css','/join.js']);
-const CORE=['/','/index.html','/about.html','/package.html','/pricing.html','/contact.html','/faq.html','/portfolio.html','/manifest.webmanifest','/site.css','/site.js','/assets/rogershub-app-icon.svg','/assets/rogershub-logo.svg'];
+const CORE=['/','/index.html','/about.html','/package.html','/pricing.html','/contact.html','/faq.html','/portfolio.html','/reviews.html','/support.html','/news.html','/blog.html','/gallery.html','/testimonials.html','/join.html','/community.html','/manifest.webmanifest','/site.css','/site.js','/assets/rogershub-app-icon.svg','/assets/rogershub-logo.svg'];
 function cacheable(url){return PUBLIC_PAGES.has(url.pathname)||STATIC_FILES.has(url.pathname)||(url.pathname.startsWith('/assets/')&&/\.(svg|png|jpg|jpeg|webp|gif|ico|woff2?)$/i.test(url.pathname));}
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE_NAME).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE_NAME).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
