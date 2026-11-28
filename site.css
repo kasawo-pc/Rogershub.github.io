@@ -45,3 +45,17 @@ body{animation:rh-page-in .35s ease both}
 img{max-width:100%;height:auto}
 [hidden]{display:none!important}
 @media(prefers-reduced-motion:reduce){body{animation:none!important} :where(a,button,.card,.panel,.form){transition:none!important}}
+
+/* Rogers Hub 2026 cross-page experience upgrade */
+:root{--rh-focus:#65e0d2;--rh-glass:rgba(15,25,43,.88)}
+:where(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:2px solid var(--rh-focus);outline-offset:3px}
+.card,.panel,.form,.contact-item,.faq,.article,.quote,.price-card{box-shadow:0 10px 35px rgba(0,0,0,.12)}
+img,video,iframe{max-width:100%}img{height:auto}main{min-height:45vh}
+.nav-links a,footer a,.text-link{transition:color .18s ease,opacity .18s ease}
+.btn:active,button:active{transform:translateY(1px)}
+.rh-search-launch{border:1px solid var(--line);background:transparent;color:var(--text);border-radius:10px;padding:9px 12px;cursor:pointer;font-weight:600}
+.rh-search-dialog{position:fixed;inset:0;z-index:10001;background:rgba(3,6,12,.76);backdrop-filter:blur(7px);display:none;align-items:flex-start;justify-content:center;padding:12vh 16px 20px}
+.rh-search-dialog.open{display:flex}.rh-search-box{width:min(620px,100%);background:#101a2b;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 25px 90px #0009}
+.rh-search-box input{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;background:#08111f;color:var(--text)}.rh-search-results{max-height:50vh;overflow:auto;margin-top:12px}.rh-search-results a{display:block;padding:12px;border-bottom:1px solid var(--line);border-radius:9px}.rh-search-results a:hover{background:#718bff18}.rh-search-results small{display:block;color:var(--muted)}.rh-search-empty{color:var(--muted);padding:15px}
+@media(max-width:720px){.rh-search-launch{display:none}.wrap{width:min(var(--max),calc(100% - 30px))}.section-head{margin-bottom:26px}.card,.panel,.form{padding:clamp(16px,4vw,24px)}.contact-grid,.grid2{gap:22px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
